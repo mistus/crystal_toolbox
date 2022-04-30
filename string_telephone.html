@@ -12,6 +12,60 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 </head>
 
+<script>      
+  function searchMessage()
+  {
+    let where = $("#voice_where").val();
+    var url = "http://winslot3d.com/string_telephone?where=" + where;
+
+    $.ajax(
+      url,
+      {
+        type: 'get',
+        async: false,
+        success: function (response) {
+            console.log(response);
+            if(response.result == null) {
+              $("#result_message").html("沒有訊息");
+              return;
+            }
+
+            $("#result_message").html(response.result);
+        }
+      }
+    );
+  }
+
+  function sentMessage()
+  {
+    let to = $("#voice_to").val();
+    let message = $("#voice_message").val();
+    var url = "http://winslot3d.com/string_telephone";
+
+    $.ajax(
+      url,
+      {
+        type: 'post',
+        async: false,
+        data: { "to" : to, "message": message},
+        success: function (response) {
+            console.log(response);
+            $("#sent_dialog").html("傳送成功");
+          
+            setTimeout(function(){
+              $("#sent_dialog").html("");
+            }, 1000);
+        }
+      }
+    );
+  }
+
+
+
+
+
+</script>
+
 <body id="text">
 
   <header>
@@ -37,11 +91,11 @@
             </div>
             <div class="book__discription">
               <h4>將聲音傳到遠方</h4>
-              <p> <input type="text" class="form-control" placeholder="輸入傳遞的目的地"/></p>
-              <p> <input type="text" class="form-control" placeholder="輸入傳遞的內容"/></p>
+              <p> <input id="voice_to" type="text" class="form-control" placeholder="輸入傳遞的目的地"/></p>
+              <p> <input id="voice_message" type="text" class="form-control" placeholder="輸入傳遞的內容"/></p>
               <!-- <a href="#" class="btn blue">BOOTHで買う</a> -->
-              <input name="submit" type="submit" value="傳送">
-              
+              <input name="submit" type="submit" value="傳送" onclick="sentMessage()">
+              <p id="sent_dialog"></p>
             </div>
           </div>
 
@@ -54,9 +108,9 @@
 
             <div class="book__discription">
               <h4>嘗試接收聲音</h4>
-              <p> <input type="text" class="form-control" placeholder="位於何處"/></p>
-              <input name="submit" type="submit" value="接收">
-              <p> message </p>
+              <p> <input id="voice_where" type="text" class="form-control" placeholder="位於何處"/></p>
+              <input name="submit" type="submit" value="接收" onclick="searchMessage()">
+              <p id="result_message"> </p>
               <!-- <a href="#" class="btn blue">BOOTHで買う</a> -->
             </div>
 
