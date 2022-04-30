@@ -24,6 +24,16 @@ p {
   padding: 0;
 }
 
+h0 {
+  display: block;
+  font-size: 16em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
 /* ==========================================
   以下、デザインを決める記述です
    ========================================== */
@@ -103,7 +113,7 @@ img + img {
 }
 
 h2 {
-  font-size: 130%;
+  font-size: 165%;
   font-weight: normal;
   margin: 20px 5px;
   width: 95%;
@@ -185,7 +195,7 @@ header img.heroimg {
     height: 200px;
   }
   header h1 {
-    font-size: 150%;
+    font-size: 300%;
   }
   header p {
     font-size: 12px;
@@ -326,7 +336,7 @@ header p {
 }
 
 .update .inner {
-  height: 80px;
+  height: 50px;
   overflow-y: scroll;
 }
 
@@ -816,7 +826,7 @@ span.pink {
 }
 
 #text main h2 {
-  margin: 20px auto 40px;
+  margin: 10px auto 10px;
 }
 
 #text main p {
