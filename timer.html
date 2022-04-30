@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>水晶產工具箱</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/fuwaimg.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/jquery.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+</head>
+
+<script>
+    function playVoice (){
+        var audio = document.getElementById("audio1");
+        audio.play();
+    }
+
+    function stopVoice()
+    {
+      var audio = document.getElementById("audio1");
+        audio.pause();
+        audio.currentTime = 0;
+    }
+
+    function getRemainSecond()
+    {
+      // setInterval執行並不安定 必須以現時時間作為基準
+      var currentTimeMs = new Date().getTime();
+
+      let remainMs = this.endTimeMs - currentTimeMs;
+
+      let remainSecond = Math.floor( remainMs / 1000 ) ;
+
+      return remainSecond;
+    }
+
+    function countDown()
+    {
+        // let time = $('#timer_display').text()
+        // let timeArray = time.split(':')
+        // let min = parseInt(timeArray[0]);
+        // let second = parseInt(timeArray[1]);
+        // let totalSecond = min * 60 + second;
+        // totalSecond = totalSecond-1;
+
+        let remainSecond = this.getRemainSecond();
+
+        if(remainSecond <= 0) {
+            clearInterval(this.interval);
+            this.playVoice();
+            $('#timer_display').text("00:00");
+            return;
+        }
+
+        let dateString = secondToString(remainSecond);
+        $('#timer_display').text(dateString);
+    }
+
+    function changeVoice(userVoice)
+    {
+      let audio = document.getElementById("audio1");
+      const urlObj = URL.createObjectURL(userVoice.files[0]);
+      audio.src = urlObj;
+    }
+
+    function startCountdown()
+    {
+        clearInterval(this.interval);
+        this.stopVoice();
+
+        var userVoice = document.getElementById("upload_voice");
+        if (userVoice.files.length) {
+            this.changeVoice(userVoice);
+        }
+
+        let countdownMin = $('#countdownMin').val();
+        if(!countdownMin) {
+          return;
+        }
+        
+        //設定計時器終點
+        this.endTimeMs = new Date().getTime() + countdownMin * 60 * 1000;
+
+        let time = this.secondToString(countdownMin * 60)
+
+        $('#timer_display').text(time);
+        // $('#timer_display').text("00:05");
+
+        this.interval = setInterval(function () {
+            this.countDown();
+        },1000);
+    }
+
+    function stop()
+    {
+        $('#timer_display').text("00:00");
+        clearInterval(this.interval);
+
+        this.stopVoice();
+    }
+
+    function secondToString(second)
+    {
+        let minString = Math.floor( second / 60 ) ;
+        let secondString = second % 60;
+
+        if (minString < 10) {
+            minString = "0" + minString;
+        }
+
+        if (secondString < 10) {
+            secondString = "0" + secondString;
+        }
+
+        return minString +":"+secondString;
+    }
+
+</script>
+
+<body id="text">
+
+  <header>
+    <div class="container wrapper">
+
+      <img src="img/top.jpg" class="heroimg">
+
+    </div> <!-- end container -->
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="row max">
+
+        <div class="col-12">
+          <h2 class="h2-b">計時器 寵物不再離去</h2>
+          <p class="center">致敬消逝的惡魔侍者一號與二號...</p>
+
+          <h0 id="timer_display" class="center">00:00</h0>
+          <div class="center">
+            <p> 
+                <input type="text" id="countdownMin" class="form-control" placeholder="輸入時間(分鐘)"/>
+                <input name="countdown" type="submit" onclick="startCountdown()" value="倒數">
+                <input name="stop" type="submit" onclick="stop()" value="停止">
+            </p>
+
+            <div class="center">
+                <h3>音效不喜歡? 自己換一個</h3>
+                <input type="file" id="upload_voice" accept="audio/mp3" multiple />
+            </div>
+          </div>
+
+          <audio hidden id = 'audio1' controls loop src="mp3/hahaha.mp3"></audio>
+        </div>
+
+      </div> <!-- 本コンテナおわり -->
+    </div> <!-- end col-12 -->
+
+
+
+    <!-- </div> end container -->
+  </main>
+
+  <footer>
+    <div class="container">
+      <a href="javascript:history.back()" class="home">HOME</a>
+      <p class="template"><a href="https://do.gt-gt.org/" target="_blank">template by do.</a></p>
+    </div>
+  </footer>
+
+<script src="js/fuwaimg.js"></script>
+</body>
+
+</html>
