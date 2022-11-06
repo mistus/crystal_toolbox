@@ -19,7 +19,7 @@
   function searchMessage()
   {
     let where = $("#voice_where").val();
-    var url = "https://winslot3d.com/string_telephone?where=" + where;
+    var url = "https://winslot3d.com/api/string_telephone?address=" + where;
 
     $.ajax(
       url,
@@ -43,14 +43,14 @@
   {
     let to = $("#voice_to").val();
     let message = $("#voice_message").val();
-    var url = "https://winslot3d.com/string_telephone";
+    var url = "https://winslot3d.com/api/string_telephone";
 
     $.ajax(
       url,
       {
         type: 'post',
         async: false,
-        data: { "to" : to, "message": message},
+        data: { "address" : to, "message": message},
         success: function (response) {
             console.log(response);
             $("#sent_dialog").html("傳送成功");
@@ -62,10 +62,6 @@
       }
     );
   }
-
-
-
-
 
 </script>
 
