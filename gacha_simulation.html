@@ -11,6 +11,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7648432463826362"
+        crossorigin="anonymous"></script>
+
         <script>
             var gachaResult = new Object();
             var gachaCount = 0;
@@ -89,7 +92,16 @@
                 let firstItemRareSetting = infoObj[0].rare;
                 let isNewVersionTable = this.isNumber(firstItemRareSetting.replaceAll('%', ''));
                 if (isNewVersionTable) {
+                    //整數運算避免除法計算錯誤
+                    var totalRate = 0;
+                    infoObj.forEach(function (item){
+                        var rate = parseFloat(item.rare.replaceAll('%', '')) * 1000;
+                        totalRate = totalRate + rate;
+                    });
+                    totalRate = totalRate / 1000;
+                    
                     $('#gacha_rate_setting').hide();
+                    $('#ro_rate_setting').append(", 目前總和為" + totalRate + "%")
                     $('#ro_rate_setting').show();
                 } else {
                     $('#gacha_rate_setting').show();
@@ -148,6 +160,20 @@
                 result.innerHTML = "";
 
                 for (let i = 0; i < 5; i++) {
+                    var present = gacha();
+                    var p = makeGachaResultElement(present.name + "x" + present.amount + "!!");
+                    result.appendChild(p);
+                }
+
+            }
+
+            /** 轉蛋 N次 **/
+            function gachaTimes(count) {
+                /** 輸出 **/
+                var result = document.getElementById("result");
+                result.innerHTML = "";
+
+                for (let i = 0; i < count; i++) {
                     var present = gacha();
                     var p = makeGachaResultElement(present.name + "x" + present.amount + "!!");
                     result.appendChild(p);
@@ -416,8 +442,10 @@
 
     <div class="container" >
       <button type="button" class="btn btn-danger offset-md-8" onclick="gachaOnce()" > 轉蛋模擬 </button>
-      <button type="button" class="btn btn-danger" onclick="gachaFiveTimes()" > 轉蛋五連模擬 </button>
-      <button type="button" class="btn btn-danger" onclick="gachaFouceSSS()" > SSS抽獎次數模擬</button>
+      <button type="button" class="btn btn-danger" onclick="gachaFiveTimes()" > 5連 </button>
+      <button type="button" class="btn btn-danger" onclick="gachaTimes(50)" > 50連</button>
+      <button type="button" class="btn btn-danger" onclick="gachaTimes(100)" > 100連 </button>
+      <!-- <button type="button" class="btn btn-danger" onclick="gachaFouceSSS()" > SSS抽獎次數模擬</button> -->
     
       <!-- <button type="button" class="btn btn-secondary col-md-1" data-toggle="modal" data-target="#myModal"> -->
       <button type="button" class="btn btn-secondary col-md-1" onclick="showModal()">
